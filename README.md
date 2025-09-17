@@ -1,5 +1,3 @@
-Here's a short README for `rofi-quick-calc`:
-
 # Rofi Quick Calc
 
 A lightweight, rofi-based calculator with calculation history.
