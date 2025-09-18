@@ -80,6 +80,28 @@ bindsym $mod+c exec --no-startup-id python3 ~/bin/rofi-quick-calc.py
 | Exponents | `2^8` or `2**8` | `256` |
 | Constants | `pi * 2` | `6.28318` |
 
+### Implicit Multiplication Support
+The calculator automatically handles implicit multiplication, making expressions more natural to write:
+
+**Supported Patterns:**
+- `7(12*54)` → `7*(12*54)` (number before parentheses)
+- `12(1/3)` → `12*(1/3)` (number before parentheses)
+- `(1+2)(3+4)` → `(1+2)*(3+4)` (parentheses next to each other)
+- `)7` → `)*7` (parentheses before number)
+- `3sqrt(9)` → `3*sqrt(9)` (number before function)
+
+**Examples:**
+```bash
+2(3+4)        # = 14
+1 + 7(12*54)  # = 1 + 7*648 = 4537
+3sqrt(9)      # = 3*3 = 9
+(1+2)(3+4)    # = 3*7 = 21
+```
+
+### Enhanced Expression Processing
+- Spaces are automatically removed from expressions
+- Mathematical functions support implicit multiplication
+
 ## 🛠️ Configuration
 
 ### Rofi Theme
