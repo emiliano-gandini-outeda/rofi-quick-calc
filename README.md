@@ -52,6 +52,34 @@ pip install pyperclip
 sudo apt install libnotify-bin
 ```
 
+You're absolutely right! On Arch Linux, Python packages should be installed via pacman when available, not pip. Here's the corrected Arch Linux section:
+
+## 🐧 Arch Linux Installation
+
+### Prerequisites Installation
+```bash
+# Install required packages
+sudo pacman -S rofi python python-pip libnotify
+
+# Install clipboard support (choose one based on your environment)
+sudo pacman -S xclip       # For X11
+# or
+sudo pacman -S wl-clipboard  # For Wayland
+
+# Install Python dependencies via pacman (recommended)
+sudo pacman -S python-pyperclip
+```
+
+### Verify Installation
+```bash
+# Check if pyperclip is available system-wide
+python -c "import pyperclip; print('pyperclip installed successfully')"
+
+# If the above fails, check if it's available for your user
+python -c "import sys; sys.path.append('/usr/lib/python3.x/site-packages'); import pyperclip; print('pyperclip available')"
+```
+
+
 ### Keyboard Shortcut Setup
 
 Add a keyboard shortcut to launch the calculator:
@@ -164,6 +192,22 @@ sudo apt install rofi
 ### Notifications Not Working
 ```bash
 sudo apt install libnotify-bin
+```
+### Troubleshooting for Arch
+
+**Python Package Issues:**
+```bash
+# Check if python-pyperclip is installed
+pacman -Q python-pyperclip
+
+# If using pip installation, check user packages
+pip list --user | grep pyperclip
+
+# Reinstall if needed (pacman preferred)
+sudo pacman -S python-pyperclip
+
+# Or with pip fallback
+pip install --user --force-reinstall pyperclip
 ```
 
 ## 📁 File Locations
