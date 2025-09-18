@@ -3,6 +3,7 @@ import subprocess
 import math
 import sys
 import os
+import re
 from pathlib import Path
 
 try:
@@ -57,7 +58,7 @@ def copy_to_clipboard(text):
     
     for cmd in clipboard_commands:
         try:
-            process = subprocess.Popen(cmd, stdin=subprocess.Pipe, text=True)
+            process = subprocess.Popen(cmd, stdin=subprocess.PIPE, text=True)
             process.communicate(input=text_str)
             if process.returncode == 0:
                 return True
@@ -81,20 +82,51 @@ def show_notification(message, urgency="normal"):
         # Fallback to terminal output if notify-send fails
         print(f"📋 {message}")
 
+def preprocess_expression(expr):
+    """Preprocess expression to handle implicit multiplication"""
+    # Remove spaces
+    expr = expr.replace(' ', '')
+    
+    # Handle implicit multiplication around parentheses
+    # Patterns: number(, )(, )number, )(, etc.
+    
+    # Add * between number and ( e.g., 7( -> 7*(
+    expr = re.sub(r'(\d)(\()', r'\1*\2', expr)
+    
+    # Add * between ) and number e.g., )7 -> )*7
+    expr = re.sub(r'(\))(\d)', r'\1*\2', expr)
+    
+    # Add * between ) and ( e.g., )( -> )*(
+    expr = re.sub(r'(\))(\()', r'\1*\2', expr)
+    
+    # Add * between number and function e.g., 2sqrt -> 2*sqrt
+    math_functions = ['sin', 'cos', 'tan', 'sqrt', 'log', 'ln', 'exp', 'abs']
+    for func in math_functions:
+        expr = re.sub(r'(\d)(' + func + r')', r'\1*\2', expr)
+    
+    # Replace common symbols
+    expr = expr.replace('×', '*').replace('÷', '/')
+    expr = expr.replace('^', '**')  # Handle exponent notation
+    
+    return expr
+
 def calculate(expr):
-    """Safely calculate mathematical expressions"""
+    """Safely calculate mathematical expressions with implicit multiplication support"""
     try:
         expr = expr.strip()
         if not expr:
             return None
-            
-        # Replace common symbols
-        expr = expr.replace('×', '*').replace('÷', '/')
-        expr = expr.replace('^', '**')  # Handle exponent notation
+        
+        # Preprocess the expression to handle implicit multiplication
+        expr = preprocess_expression(expr)
+        print(f"Processed expression: {expr}")
         
         # Allow math functions and basic operations
         allowed = {k: getattr(math, k) for k in dir(math) if not k.startswith("__")}
-        allowed.update({'abs': abs, 'round': round, 'min': min, 'max': max, 'pow': pow})
+        allowed.update({
+            'abs': abs, 'round': round, 'min': min, 'max': max, 'pow': pow,
+            'ln': math.log, 'log10': math.log10, 'log': math.log10
+        })
         
         result = eval(expr, {"__builtins__": {}}, allowed)
         
@@ -116,12 +148,15 @@ def calculate(expr):
         return None
 
 def run_calculator():
+    """Simple working calculator"""
     print("Starting calculator...")
+    print("Supports implicit multiplication: 2(3+4) = 2*(3+4), 3sqrt(9) = 3*sqrt(9)")
     
     while True:
         try:
+            # Build simple display
             display_lines = []
-            display_lines.append("Enter calculation (2+2, sqrt(16), etc.)")
+            display_lines.append("Enter calculation (2+2, 7(12*54), sqrt(16), etc.)")
             
             if history:
                 display_lines.append("")
@@ -139,7 +174,7 @@ def run_calculator():
                 "-p", "➤ Calculate:",
                 "-theme", "Adapta-Nokto",
                 "-lines", "10",
-                "-width", "50",
+                "-width", "60",
                 "-i",
                 "-format", "s"
             ]
@@ -231,6 +266,7 @@ def run_calculator():
 
 if __name__ == "__main__":
     print("Calculator starting...")
+    print("Now supports implicit multiplication: 2(3+4), 3sqrt(9), etc.")
     
     if not PYPERCLIP_AVAILABLE:
         print("Note: pyperclip not available. Clipboard functionality may be limited.")
