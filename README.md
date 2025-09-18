@@ -14,6 +14,8 @@
 
 A lightning-fast, keyboard-driven calculator that integrates seamlessly with Rofi. Perform calculations instantly and have results automatically copied to your clipboard.
 
+![Rofi Quick Calc UI](https://i.imgur.com/K2X7L47.png)
+
 ## ✨ Features
 
 - **⚡ Instant Calculations**: Type math expressions and get results immediately
