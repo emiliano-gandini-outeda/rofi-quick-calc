@@ -1,6 +1,20 @@
 # Rofi Quick Calc
 
+<p align="center">
+  <img src="https://img.shields.io/badge/Python-3.12-blue?style=for-the-badge&logo=python&logoColor=3776AB" alt="Python">
+   <a href="https://github.com/emiliano-gandini-outeda/LibreCourse/commits/main">
+    <img src="https://img.shields.io/github/last-commit/emiliano-gandini-outeda/LibreCourse?style=for-the-badge" alt="Last Commit">
+  </a>
+  <a href="LICENSE">
+    <img src="https://img.shields.io/badge/License-MIT-blue.svg?style=for-the-badge" alt="License: MIT License">
+  </a>
+</p>
+
+---
+
 A lightning-fast, keyboard-driven calculator that integrates seamlessly with Rofi. Perform calculations instantly and have results automatically copied to your clipboard.
+
+![Rofi Quick Calc UI](https://i.imgur.com/K2X7L47.png)
 
 ## ✨ Features
 
