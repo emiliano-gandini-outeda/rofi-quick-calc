@@ -1,69 +1,171 @@
-Here's a short README for `rofi-quick-calc`:
-
 # Rofi Quick Calc
 
-A lightweight, rofi-based calculator with calculation history.
+A lightning-fast, keyboard-driven calculator that integrates seamlessly with Rofi. Perform calculations instantly and have results automatically copied to your clipboard.
 
-## Features
+## ✨ Features
 
--   **Persistent history**: Your calculation history remains visible while typing
--   **Math functions**: Supports `sin`, `cos`, `tan`, `log`, `sqrt`, and other math operations
--   **Lightweight**: Runs entirely through rofi with no external dependencies
+- **⚡ Instant Calculations**: Type math expressions and get results immediately
+- **📋 Auto-Copy**: Results are automatically copied to clipboard
+- **📚 History**: Maintains calculation history between sessions
+- **🎯 Rofi Integration**: Native Rofi interface with theming support
+- **🔢 Math Functions**: Full math library support (sin, cos, sqrt, log, etc.)
+- **💻 Desktop Notifications**: Visual feedback for copied results
+- **🔄 History Reuse**: Select previous calculations to copy results or reuse expressions
 
-## Installation
+## 🚀 Installation
 
-1. Ensure you have `rofi` installed:
+### Prerequisites
 
-    ```bash
-    sudo apt install rofi  # Debian/Ubuntu
-    ```
+- Python 3.x
+- Rofi (`sudo apt install rofi` on Debian/Ubuntu)
+- Optional: `libnotify-bin` for desktop notifications
 
-    ```bash
-    sudo pacman -S rofi  # Arch
-    ```
+### Quick Install
 
-2. Make the script executable:
-
-    ```bash
-    chmod +x rofi-quick-calc.py
-    ```
-
-3. (Optional) Move to your PATH:
-    ```bash
-    sudo mv rofi-quick-calc.py /usr/local/bin/rofi-quick-calc
-    ```
-
-## Usage
-
-Run the script:
-
+1. Clone or download the script:
 ```bash
-./rofi-quick-calc.py
+curl -o ~/bin/rofi-quick-calc.py https://raw.githubusercontent.com/emiliano-gandini-outeda/rofi-quick-calc/main/rofi-quick-calc.py
+chmod +x ~/bin/rofi-quick-calc.py
 ```
 
-Or if moved to PATH:
-
+2. Install Python dependencies:
 ```bash
-rofi-quick-calc
+pip install pyperclip
 ```
 
-## Key Features
+3. (Optional) Install notification support:
+```bash
+sudo apt install libnotify-bin
+```
 
--   **Type mathematical expressions** in the input field
--   **Press Enter** to calculate and add to history
--   **Escape** to exit
+### Keyboard Shortcut Setup
 
-## Supported Operations
+Add a keyboard shortcut to launch the calculator:
 
--   Basic arithmetic: `+`, `-`, `*`, `/`, `**` (power)
--   Math functions: `sin()`, `cos()`, `tan()`, `log()`, `sqrt()`, etc.
--   Constants: `pi`, `e`
--   Advanced: `abs()`, `round()`, `min()`, `max()`, `pow()`
+**i3WM** (`~/.config/i3/config`):
+```bash
+bindsym $mod+c exec --no-startup-id python3 ~/bin/rofi-quick-calc.py
+```
 
-## Examples
+**GNOME** (Settings → Keyboard Shortcuts):
+- Add custom shortcut: `python3 ~/bin/rofi-quick-calc.py`
 
--   `2 + 2 * 3`
--   `sin(pi/2)`
--   `sqrt(16) + log(100)`
--   `2**8 + 45/3`
+**KDE** (System Settings → Shortcuts):
+- Add custom shortcut with the same command
 
+## 🎮 Usage
+
+### Basic Calculation
+1. Press your configured hotkey (e.g., `Super+C`)
+2. Type a mathematical expression:
+   - `2+2`
+   - `sqrt(16)`
+   - `sin(pi/2)`
+   - `2^8` (exponentiation)
+3. Press Enter
+4. Result is calculated and copied to clipboard automatically
+
+### History Features
+- Previous calculations are shown in the Rofi menu
+- Select any history item to copy its result to clipboard
+- History persists between sessions (stored in `~/.calc_history`)
+
+### Supported Operations
+
+| Operation | Example | Result |
+|-----------|---------|--------|
+| Basic Math | `2+3*4` | `14` |
+| Functions | `sqrt(25)` | `5` |
+| Trigonometry | `sin(pi/2)` | `1` |
+| Exponents | `2^8` or `2**8` | `256` |
+| Constants | `pi * 2` | `6.28318` |
+
+## 🛠️ Configuration
+
+### Rofi Theme
+The script uses the `Adapta-Nokto` theme by default. To change the theme:
+
+1. Edit the script and modify the rofi command:
+```python
+cmd = [
+    "rofi",
+    "-dmenu", 
+    "-p", "➤ Calculate:",
+    "-theme", "your-theme-name",  # Change this
+    # ... other options
+]
+```
+
+2. Or use your system's default theme by removing the `-theme` line
+
+### History Size
+Modify the history limit in the script:
+```python
+# Change from 15 to your preferred number
+if len(history) > 15:
+    history.pop(0)
+```
+
+## 🐛 Troubleshooting
+
+### Clipboard Issues
+If copying doesn't work:
+```bash
+# Install pyperclip for better clipboard support
+pip install pyperclip
+
+# Or install system clipboard utilities
+sudo apt install xclip  # For X11
+# or
+sudo apt install wl-clipboard  # For Wayland
+```
+
+### Rofi Not Found
+```bash
+sudo apt install rofi
+```
+
+### Notifications Not Working
+```bash
+sudo apt install libnotify-bin
+```
+
+## 📁 File Locations
+
+- **Script**: `~/bin/rofi-quick-calc.py` (or your preferred location)
+- **History**: `~/.calc_history`
+- **Temporary Files**: `~/.calc_clipboard_temp` (fallback storage)
+
+## 🔧 Advanced Usage
+
+### Command Line Use
+You can also use the calculator from the command line:
+```bash
+python3 ~/bin/rofi-quick-calc.py
+```
+
+### Custom Math Functions
+The calculator supports all Python math functions:
+- `log(x)`, `log10(x)`
+- `degrees(x)`, `radians(x)`
+- `factorial(x)`
+- `hypot(x, y)`
+- And many more...
+
+## 🤝 Contributing
+
+Feel free to submit issues and enhancement requests!
+
+1. Fork the repository
+2. Create a feature branch
+3. Commit your changes
+4. Push to the branch
+5. Create a Pull Request
+
+## 📝 License
+
+This project is licensed under the MIT License. See [LICENSE](LICENSE).
+
+---
+
+**💡 Pro Tip**: Map this to a easily accessible hotkey for instant calculations anytime!
